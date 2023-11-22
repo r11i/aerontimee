@@ -22,6 +22,7 @@ function App() {
   const [airline, setAirline] = useState('');
   const [depTime, setDepTime] = useState<Date>();
   const [arrTime, setArrTime] = useState<Date>();
+  const [bookingCode, setBookingCode] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
   const handleFlightCodeChange = (newValue: string) => {
@@ -37,6 +38,10 @@ function App() {
 
   const handleArrTimeChange = (date: Date) => {
     setArrTime(date)
+  }
+
+  const handleBookingCodeChange = (newValue: string) => {
+    setBookingCode(newValue)
   }
 
   const formatDateTimeForPostgres = (dateTime: Date) => {
@@ -76,6 +81,31 @@ function App() {
         return
       }
     }
+    
+    if (!flightCode) {
+      alert ('Please fill the flight code')
+      return
+    }
+
+    if (!airline) {
+      alert('Please fill the airline')
+      return
+    }
+
+    if (!bookingCode) {
+      alert('Please fill the booking code')
+      return
+    }
+
+    if (!depTime) {
+      alert('Please fill the departure time')
+      return
+    }
+
+    if (!arrTime) {
+      alert('Please fill the arrival time')
+      return
+    }
 
     supabase
     .from('Flight')
@@ -87,7 +117,7 @@ function App() {
     .then(({ data, error }) => {
       if (error) {
         console.error(error);
-        alert("Make sure to input all fields correctly!")
+        alert("Error adding trips")
         return
       } else {
         const flightData = data;
@@ -103,22 +133,45 @@ function App() {
           const userEmail = user?.email;
 
           console.log(userEmail)
+          console.log('flightID', flightID)
+          console.log('bookingcode', bookingCode)
 
           supabase
-          .from('MyTrips')
-          .insert([{ user: userEmail, flight: flightID, status: 'Active' }])
+          .from('Passenger')
+          .select('*')
+          .eq('flight', flightID)
+          .eq('bookingcode', bookingCode)
           .then(({ data, error }) => {
             if (error) {
               console.error(error);
-              alert("You've already add the trip")
+              alert('Error adding trip')
               return
             } else {
-              console.log('Record inserted successfully:', data); 
-              alert("Trip added successfully")    
-              router.refresh()       
-              return
+              const passenger = data;
+              console.log('passenger', passenger)
+              if (passenger.length === 0) {
+                alert("You're not passenger")
+                return
+              }
+              else{ 
+                supabase
+                  .from('MyTrips')
+                  .insert([{ user: userEmail, flight: flightID, status: 'Active' }])
+                  .then(({ data, error }) => {
+                    if (error) {
+                      console.error(error);
+                      alert("You've already add the trip")
+                      return
+                    } else {
+                      console.log('Record inserted successfully:', data); 
+                      alert("Trip added successfully")    
+                      router.refresh()       
+                      return
+                    }
+                  });
+              }
             }
-          });
+          })
         }
       }
     });
@@ -166,8 +219,9 @@ function App() {
         <Navbar user={user} logOut={logOut} image='/aerontimelogo-black.png' navbarStyles="z-[100] box-border relative top-0 w-full px-[82px]" linkStyles="text-black flex items-center text-[24px]" />
         <fieldset style={{borderTop: '2px solid #76B3DD'}} className='px-[183px] py-[70px]'>
             <legend style={{margin: 'auto', paddingLeft: '5%', paddingRight: '5%', fontSize: '36px', fontWeight: '700'}}>Register A Flight</legend>
-                <InputField className="mb-[27px]" placeholder="Input your flight code..." label="Flight Code" value={flightCode} onChange={handleFlightCodeChange} required={true}/>
+                <InputField className="mb-[27px]" placeholder="Input your flight code..." label="Flight Code" value={flightCode} onChange={handleFlightCodeChange}/>
                 <InputField className="mb-[27px]" placeholder="Input your airline..." label="Airline" value={airline} onChange={handleAirlineChange}/>
+                <InputField className="mb-[27px]" placeholder="Input your booking code..." label="Booking Code" value={bookingCode} onChange={handleBookingCodeChange}/>
                 <div className='font-bold'>Departure Date and Time</div>
                 <div className="px-[19px] py-[9px] mb-[27px] flex border-solid border-[#e5e7eb] border-[2px] rounded-[10px] w-[100%]">
                   <DatePicker

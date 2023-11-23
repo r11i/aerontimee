@@ -190,7 +190,7 @@ export default function Home() {
         </div>
       </div>
       <div className='flex'>
-        <div className='border-solid border-[1px] border-black w-[30%]'>
+        <div className='w-[30%]'>
           <p className='text-[32px] font-[600] pl-[35px] pt-[20px] pb-[20px]'>Filter</p>
           <div className='bg-[#2D2F3D] rounded-tl-[0px] rounded-tr-[20px] rounded-bl-[0px] rounded-br-[20px]'>
             <p className='text-[#9ACAE7] font-[600] pl-[35px] pt-[20px] pb-[10px] '>Airlines</p>
@@ -216,7 +216,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div id='flightData' className='border-solid border-black border-[1px] w-[70%] pl-[20px]'>
+        <div id='flightData' className='w-[70%] pl-[20px]'>
           {/* <ScrollBarContainer content={<FlightList flights={flightsData} isClickable={false}/>} className='w-full mx-auto' /> */}
           {/* <ScrollBarContainer
             content={<FlightList flights={flightsData.filter(flight => !selectedAirline || flight.airline === selectedAirline)} isClickable={false} />}

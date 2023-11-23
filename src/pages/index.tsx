@@ -11,6 +11,9 @@ import { User } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Link as ScrollLink } from 'react-scroll';
+import InputField from '@/components/InputField';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -40,10 +43,9 @@ export default function Home() {
   const nextDay = formatInitialDateTimeForPostgres(date);
   const [user, setUser] = useState<User | null>(null);
   const [flightsData, setFlightsData] = useState<any[]>([]);
-  const [selectedAirline, setSelectedAirline] = useState<string | null>(null);
-  const [clickedAirline, setClickedAirline] = useState<string | null>(null);
-  const [selectedOrigin, setSelectedOrigin] = useState<string | null>(null);
-  const [selectedDestination, setSelectedDestination] = useState<string | null>(null);
+  const [selectedAirline, setSelectedAirline] = useState<string>('');
+  const [selectedOrigin, setSelectedOrigin] = useState<string>('');
+  const [selectedDestination, setSelectedDestination] = useState<string>('');
   const supabase = createClientComponentClient();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
@@ -62,16 +64,17 @@ export default function Home() {
       }
     }
   }
-  const handleAirlineClick = (airline: string) => {
-    // setClickedAirline(airline === clickedAirline ? null : airline);
-    setSelectedAirline(airline === selectedAirline ? null : airline);
+
+  const handleAirlineInputChange = (newValue: string) => {
+    setSelectedAirline(newValue);
   };
-  const handleOriginClick = (origin: string) => {
-    setSelectedOrigin(origin === selectedOrigin ? null : origin);
+
+  const handleOriginInputChange = (newValue: string) => {
+    setSelectedOrigin(newValue);
   };
-  
-  const handleDestinationClick = (destination: string) => {
-    setSelectedDestination(destination === selectedDestination ? null : destination);
+
+  const handleDestinationInputChange = (newValue: string) => {
+    setSelectedDestination(newValue);
   };
   useEffect(() => {
     const fetchUserData = async () => {
@@ -122,9 +125,37 @@ export default function Home() {
     alert('Button clicked!');
   };
 
+  const [startDepTime, setStartDepTime] = useState<Date>();
+  const [endDepTime, setEndDepTime] = useState<Date>();
+  const [startArrTime, setStartArrTime] = useState<Date>();
+  const [endArrTime, setEndArrTime] = useState<Date>();
+
+
+  const handleStartDepTimeChange = (date: Date) => {
+    setStartDepTime(date)
+  }
+
+  const handleEndDepTimeChange = (date: Date) => {
+    setEndDepTime(date)
+  }
+
+  const handleStartArrTimeChange = (date: Date) => {
+    setStartArrTime(date)
+  }
+
+  const handleEndArrTimeChange = (date: Date) => {
+    setEndArrTime(date)
+  }
+
+
   const filterByAirline = (flight: any) => !selectedAirline || flight.airline === selectedAirline;
   const filterByOrigin = (flight: any) => !selectedOrigin || flight.originAirport === selectedOrigin;
   const filterByDestination = (flight: any) => !selectedDestination || flight.destAirport === selectedDestination;
+  const filterByStartDepTime = (flight: any) => !startDepTime || new Date(flight.depTime) >= new Date(formatDateTimeForPostgres(startDepTime));
+  const filterByEndDepTime = (flight: any) => !endDepTime || new Date(flight.depTime) <= new Date(formatDateTimeForPostgres(endDepTime));
+  const filterByStartArrTime = (flight: any) => !startArrTime || new Date(flight.arrTime) >= new Date(formatDateTimeForPostgres(startArrTime));
+  const filterByEndArrTime = (flight: any) => !endArrTime || new Date(flight.arrTime) <= new Date(formatDateTimeForPostgres(endArrTime));
+
   
   if(isLoading) 
     return (
@@ -191,42 +222,76 @@ export default function Home() {
       </div>
       <div className='flex'>
         <div className='w-[30%]'>
-          <p className='text-[32px] font-[600] pl-[35px] pt-[20px] pb-[20px]'>Filter</p>
-          <div className='bg-[#2D2F3D] rounded-tl-[0px] rounded-tr-[20px] rounded-bl-[0px] rounded-br-[20px]'>
-            <p className='text-[#9ACAE7] font-[600] pl-[35px] pt-[20px] pb-[10px] '>Airlines</p>
-            <div className="pl-[35px] pb-[20px] pr-[35px] text-white space-x-2 space-y-2">
-              <button onClick={() => handleAirlineClick('Garuda Indonesia')} className={`border rounded-[15px] border-[#76B3DD]  px-3 py-1 ${selectedAirline === 'Garuda Indonesia' ? 'bg-[#76B3DD] font-bold' : ''}`}>Garuda Indonesia</button>
-              <button onClick={() => handleAirlineClick('Citilink')} className={`border rounded-[15px] border-[#76B3DD] px-3 py-1 ${selectedAirline === 'Citilink' ? 'bg-[#76B3DD] font-bold' : ''}`}>Citilink</button>
-              <button onClick={() => handleAirlineClick('Lion Air')} className={`border rounded-[15px] border-[#76B3DD]  px-3 py-1 ${selectedAirline === 'Lion Air' ? 'bg-[#76B3DD] font-bold' : ''}`}>Lion Air</button>
-              <button onClick={() => handleAirlineClick('Batik Air')} className={`border rounded-[15px] border-[#76B3DD] px-3 py-1 ${selectedAirline === 'Batik Air' ? 'bg-[#76B3DD] font-bold' : ''}`}>Batik Air</button>
-              <button onClick={() => handleAirlineClick('Sriwijaya Air')} className={`border rounded-[15px] border-[#76B3DD] px-3 py-1 ${selectedAirline === 'Sriwijaya Air' ? 'bg-[#76B3DD] font-bold' : ''}`}>Sriwijaya Air</button>
+          <p className='text-[32px] font-[600] pl-[35px] pb-[20px]'>Filter</p>
+          <div className='bg-[#2D2F3D] rounded-tl-[0px] rounded-tr-[20px] rounded-bl-[0px] rounded-br-[20px] px-[35px] py-[20px]'>
+            <InputField labelStyle='text-[#9ACAE7] font-[600]' className="mb-[27px]" placeholder="Airline" label="Airline" value={selectedAirline} onChange={handleAirlineInputChange}/>
+            <InputField labelStyle='text-[#9ACAE7] font-[600]' className="mb-[27px]" placeholder="Origin" label="Origin" value={selectedOrigin} onChange={handleOriginInputChange}/>
+            <InputField labelStyle='text-[#9ACAE7] font-[600]' className="mb-[27px]" placeholder="Destination" label="Destination" value={selectedDestination} onChange={handleDestinationInputChange}/>   
+            <div className='text-[#9ACAE7] font-bold'>Start Departure Time</div>
+            <div className="bg-white px-[19px] py-[9px] mb-[27px] flex border-solid border-[#e5e7eb] border-[2px] rounded-[10px] w-[100%]">
+              <DatePicker
+                className="mr-[35px] w-[100%] "
+                selected={startDepTime}
+                onChange={handleStartDepTimeChange}
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={1}
+                timeCaption="Time"
+                dateFormat="dd/MM/yyyy h:mm aa"
+                placeholderText="Select date and time"
+              />                 
             </div>
-            <p className='text-[#9ACAE7] font-[600] pl-[35px] pt-[20px] pb-[10px] '>Origin</p>
-            <div className="pl-[35px] pb-[20px] pr-[35px] text-white space-x-2 space-y-2">
-              <button onClick={() => handleOriginClick('CGK')} className={`border rounded-[15px] border-[#76B3DD] px-3 py-1 ${selectedOrigin === 'CGK' ? 'bg-[#76B3DD] font-bold' : ''}`}>CGK</button>
-              <button onClick={() => handleOriginClick('BTH')} className={`border rounded-[15px] border-[#76B3DD] px-3 py-1 ${selectedOrigin === 'BTH' ? 'bg-[#76B3DD] font-bold' : ''}`}>BTH</button>
-              {/* Add more buttons for origins as needed */}
+            <div className='text-[#9ACAE7] font-bold'>End Departure Time</div>
+            <div className="bg-white px-[19px] py-[9px] mb-[27px] flex border-solid border-[#e5e7eb] border-[2px] rounded-[10px] w-[100%]">
+              <DatePicker
+                className="mr-[35px] w-[100%] "
+                selected={endDepTime}
+                onChange={handleEndDepTimeChange}
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={1}
+                timeCaption="Time"
+                dateFormat="dd/MM/yyyy h:mm aa"
+                placeholderText="Select date and time"
+              />                 
+            </div> 
+            <div className='text-[#9ACAE7] font-bold'>Start Arrival Time</div>
+            <div className="bg-white px-[19px] py-[9px] mb-[27px] flex border-solid border-[#e5e7eb] border-[2px] rounded-[10px] w-[100%]">
+              <DatePicker
+                className="mr-[35px] w-[100%] "
+                selected={startArrTime}
+                onChange={handleStartArrTimeChange}
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={1}
+                timeCaption="Time"
+                dateFormat="dd/MM/yyyy h:mm aa"
+                placeholderText="Select date and time"
+              />                 
             </div>
-
-            <p className='text-[#9ACAE7] font-[600] pl-[35px] pt-[20px] pb-[10px] '>Destination</p>
-            <div className="pl-[35px] pb-[20px] pr-[35px] text-white space-x-2 space-y-2">
-              <button onClick={() => handleDestinationClick('CGK')} className={`border rounded-[15px] border-[#76B3DD] px-3 py-1 ${selectedDestination === 'CGK' ? 'bg-[#76B3DD] font-bold' : ''}`}>CGK</button>
-              <button onClick={() => handleDestinationClick('BTH')} className={`border rounded-[15px] border-[#76B3DD] px-3 py-1 ${selectedDestination === 'BTH' ? 'bg-[#76B3DD] font-bold' : ''}`}>BTH</button>
-              {/* Add more buttons for destinations as needed */}
-            </div>
+            <div className='text-[#9ACAE7] font-bold'>End Arrival Time</div>
+            <div className="bg-white px-[19px] py-[9px] mb-[27px] flex border-solid border-[#e5e7eb] border-[2px] rounded-[10px] w-[100%]">
+              <DatePicker
+                className="mr-[35px] w-[100%] "
+                selected={endArrTime}
+                onChange={handleEndArrTimeChange}
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={1}
+                timeCaption="Time"
+                dateFormat="dd/MM/yyyy h:mm aa"
+                placeholderText="Select date and time"
+              />                 
+            </div> 
           </div>
+                
         </div>
         <div id='flightData' className='w-[70%] pl-[20px]'>
-          {/* <ScrollBarContainer content={<FlightList flights={flightsData} isClickable={false}/>} className='w-full mx-auto' /> */}
-          {/* <ScrollBarContainer
-            content={<FlightList flights={flightsData.filter(flight => !selectedAirline || flight.airline === selectedAirline)} isClickable={false} />}
-            className='w-full mx-auto'
-          /> */}
           <ScrollBarContainer
             content={
               <FlightList
                 flights={flightsData.filter(
-                  (flight) => filterByAirline(flight) && filterByOrigin(flight) && filterByDestination(flight)
+                  (flight) => filterByAirline(flight) && filterByOrigin(flight) && filterByDestination(flight) && filterByStartDepTime(flight) && filterByEndDepTime(flight) && filterByStartArrTime(flight) && filterByEndArrTime(flight)
                 )}
                 isClickable={false}
               />

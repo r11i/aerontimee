@@ -7,7 +7,7 @@ interface ScrollBarContainerProps {
 
 const ScrollBarContainer: React.FC<ScrollBarContainerProps> = ({ content, className }) => {
   // Combine the default class and additional class if provided
-  const containerClass = `pr-[25px] h-auto max-h-[600px] w-[90%] overflow-y-scroll overflow-x-hidden scrollbar-container ${className}`;
+  const containerClass = `pr-[25px] h-auto max-h-[785px] w-[90%] overflow-y-scroll overflow-x-hidden scrollbar-container ${className}`;
 
   return (
     <div className={containerClass}>

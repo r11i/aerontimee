@@ -95,7 +95,7 @@ export default function Home() {
       }
     };
     fetchUserData();
-    fetchFlightsData();   
+    fetchFlightsData(); 
   }, []);
 
   const logOut = async () => {

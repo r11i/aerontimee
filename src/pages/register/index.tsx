@@ -10,7 +10,21 @@ function App() {
   const router = useRouter()
   const supabase = createClientComponentClient()
   const handleRegister = async () => {
-    const {error: registrationError} = await supabase.auth.signUp({
+    await supabase
+    .from('profiles')
+    .select('*')
+    .eq('email', email)
+    .then(({ data, error }) => {
+      if (error) {
+        alert(error.message)
+        return
+      }
+      if (data.length !== 0) {
+        alert('User already exist!')
+        return
+      }
+    })
+    const {data, error: registrationError} = await supabase.auth.signUp({
       email,
       password,
       options: {

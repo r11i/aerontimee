@@ -1,8 +1,5 @@
-'use client'
-
 import React from 'react';
 import Image from 'next/image';
-import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
 import { useState } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
@@ -12,36 +9,21 @@ function App() {
   const [password, setPassword] = useState('')
   const router = useRouter()
   const supabase = createClientComponentClient()
-  // const handleRegister = async () => {
-  //   await supabase.auth.signUp({
-  //     email,
-  //     password,
-  //     options: {
-  //       emailRedirectTo: `/api/auth/`,
-  //     },
-  //   })
-  //   router.refresh()
-  // }
-
   const handleRegister = async () => {
-    // Check if email already exists using Supabase authentication API
-
-    // If email doesn't exist, proceed with registration
-    const { error: registrationError } = await supabase.auth.signUp({
+    const {error: registrationError} = await supabase.auth.signUp({
       email,
       password,
       options: {
-        // Use your desired options
+        emailRedirectTo: `/api/auth/`,
       },
-    });
+    })
 
     if (registrationError) {
       console.error("Error during registration:", registrationError.message);
       alert(registrationError.message);
       return;
     }
-
-    router.refresh();
+    router.refresh()
   }
 
   return (

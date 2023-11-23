@@ -4,11 +4,10 @@ import Image from 'next/image';
 interface FlightHistory {
   id: number;
   flightNumber: string;
-  date: string; // Assuming it's a string for simplicity, use Date if working with actual date objects
+  date: string;
   origin: string;
   destination: string;
   airline: string;
-  // time: string,
 }
 
 interface TripHistoryProps {
@@ -31,7 +30,6 @@ const groupFlightsByDate = (flightHistory: FlightHistory[]) => {
 
 const airlineImageMap: Record<string, string> = {
     'garudaindonesia': '/garudaindonesia.png',
-    // Add more airline-image mappings as needed
 };
 
 const TripHistoryList: React.FC<TripHistoryProps> = ({ flightHistory }) => {
@@ -62,15 +60,6 @@ const TripHistoryList: React.FC<TripHistoryProps> = ({ flightHistory }) => {
                     </div>
                     
                 </div>
-                {/* <div className='px-[31px] py-[43px] text-[36px] font-[600] text-white flex items-center rounded-[20px] bg-[#2D2F3D]'>
-                    {flight.time}
-                </div> */}
-
-                {/* <strong>Flight Number:</strong> {flight.flightNumber} <br />
-                <strong>Origin:</strong> {flight.origin} <br />
-                <strong>Destination:</strong> {flight.destination}
-                <strong>Time: </strong> {flight.time}
-                <strong>Airline: </strong> {flight.airline} */}
               </li>
             ))}
           </ul>

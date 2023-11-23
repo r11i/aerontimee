@@ -40,8 +40,12 @@ export default function Home() {
   const nextDay = formatInitialDateTimeForPostgres(date);
   const [user, setUser] = useState<User | null>(null);
   const [flightsData, setFlightsData] = useState<any[]>([]);
+  const [selectedAirline, setSelectedAirline] = useState<string | null>(null);
+  const [clickedAirline, setClickedAirline] = useState<string | null>(null);
+  const [selectedOrigin, setSelectedOrigin] = useState<string | null>(null);
+  const [selectedDestination, setSelectedDestination] = useState<string | null>(null);
   const supabase = createClientComponentClient();
-  const router = useRouter()
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   function updateStatus(flight: any, currentTime: any) {
     const currTime = new Date(currentTime);
@@ -58,6 +62,17 @@ export default function Home() {
       }
     }
   }
+  const handleAirlineClick = (airline: string) => {
+    // setClickedAirline(airline === clickedAirline ? null : airline);
+    setSelectedAirline(airline === selectedAirline ? null : airline);
+  };
+  const handleOriginClick = (origin: string) => {
+    setSelectedOrigin(origin === selectedOrigin ? null : origin);
+  };
+  
+  const handleDestinationClick = (destination: string) => {
+    setSelectedDestination(destination === selectedDestination ? null : destination);
+  };
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -106,6 +121,10 @@ export default function Home() {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     alert('Button clicked!');
   };
+
+  const filterByAirline = (flight: any) => !selectedAirline || flight.airline === selectedAirline;
+  const filterByOrigin = (flight: any) => !selectedOrigin || flight.originAirport === selectedOrigin;
+  const filterByDestination = (flight: any) => !selectedDestination || flight.destAirport === selectedDestination;
   
   if(isLoading) 
     return (
@@ -170,9 +189,53 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div id='flightData'>
-        <ScrollBarContainer content={<FlightList flights={flightsData} isClickable={false}/>} className='mx-auto' />
+      <div className='flex'>
+        <div className='border-solid border-[1px] border-black w-[30%]'>
+          <p className='text-[32px] font-[600] pl-[35px] pt-[20px] pb-[20px]'>Filter</p>
+          <div className='bg-[#2D2F3D] rounded-tl-[0px] rounded-tr-[20px] rounded-bl-[0px] rounded-br-[20px]'>
+            <p className='text-[#9ACAE7] font-[600] pl-[35px] pt-[20px] pb-[10px] '>Airlines</p>
+            <div className="pl-[35px] pb-[20px] pr-[35px] text-white space-x-2 space-y-2">
+              <button onClick={() => handleAirlineClick('Garuda Indonesia')} className={`border rounded-[15px] border-[#76B3DD]  px-3 py-1 ${selectedAirline === 'Garuda Indonesia' ? 'bg-[#76B3DD] font-bold' : ''}`}>Garuda Indonesia</button>
+              <button onClick={() => handleAirlineClick('Citilink')} className={`border rounded-[15px] border-[#76B3DD] px-3 py-1 ${selectedAirline === 'Citilink' ? 'bg-[#76B3DD] font-bold' : ''}`}>Citilink</button>
+              <button onClick={() => handleAirlineClick('Lion Air')} className={`border rounded-[15px] border-[#76B3DD]  px-3 py-1 ${selectedAirline === 'Lion Air' ? 'bg-[#76B3DD] font-bold' : ''}`}>Lion Air</button>
+              <button onClick={() => handleAirlineClick('Batik Air')} className={`border rounded-[15px] border-[#76B3DD] px-3 py-1 ${selectedAirline === 'Batik Air' ? 'bg-[#76B3DD] font-bold' : ''}`}>Batik Air</button>
+              <button onClick={() => handleAirlineClick('Sriwijaya Air')} className={`border rounded-[15px] border-[#76B3DD] px-3 py-1 ${selectedAirline === 'Sriwijaya Air' ? 'bg-[#76B3DD] font-bold' : ''}`}>Sriwijaya Air</button>
+            </div>
+            <p className='text-[#9ACAE7] font-[600] pl-[35px] pt-[20px] pb-[10px] '>Origin</p>
+            <div className="pl-[35px] pb-[20px] pr-[35px] text-white space-x-2 space-y-2">
+              <button onClick={() => handleOriginClick('CGK')} className={`border rounded-[15px] border-[#76B3DD] px-3 py-1 ${selectedOrigin === 'CGK' ? 'bg-[#76B3DD] font-bold' : ''}`}>CGK</button>
+              <button onClick={() => handleOriginClick('BTH')} className={`border rounded-[15px] border-[#76B3DD] px-3 py-1 ${selectedOrigin === 'BTH' ? 'bg-[#76B3DD] font-bold' : ''}`}>BTH</button>
+              {/* Add more buttons for origins as needed */}
+            </div>
+
+            <p className='text-[#9ACAE7] font-[600] pl-[35px] pt-[20px] pb-[10px] '>Destination</p>
+            <div className="pl-[35px] pb-[20px] pr-[35px] text-white space-x-2 space-y-2">
+              <button onClick={() => handleDestinationClick('CGK')} className={`border rounded-[15px] border-[#76B3DD] px-3 py-1 ${selectedDestination === 'CGK' ? 'bg-[#76B3DD] font-bold' : ''}`}>CGK</button>
+              <button onClick={() => handleDestinationClick('BTH')} className={`border rounded-[15px] border-[#76B3DD] px-3 py-1 ${selectedDestination === 'BTH' ? 'bg-[#76B3DD] font-bold' : ''}`}>BTH</button>
+              {/* Add more buttons for destinations as needed */}
+            </div>
+          </div>
+        </div>
+        <div id='flightData' className='border-solid border-black border-[1px] w-[70%] pl-[20px]'>
+          {/* <ScrollBarContainer content={<FlightList flights={flightsData} isClickable={false}/>} className='w-full mx-auto' /> */}
+          {/* <ScrollBarContainer
+            content={<FlightList flights={flightsData.filter(flight => !selectedAirline || flight.airline === selectedAirline)} isClickable={false} />}
+            className='w-full mx-auto'
+          /> */}
+          <ScrollBarContainer
+            content={
+              <FlightList
+                flights={flightsData.filter(
+                  (flight) => filterByAirline(flight) && filterByOrigin(flight) && filterByDestination(flight)
+                )}
+                isClickable={false}
+              />
+            }
+            className='w-full mx-auto'
+          />
+        </div>
       </div>
+      
       
       <Footer></Footer>
     </div>

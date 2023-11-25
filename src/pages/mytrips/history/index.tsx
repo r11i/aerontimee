@@ -17,7 +17,7 @@ interface Flight {
   airline: string;
 }
 
-function App() {
+function MyTripsHistory() {
   const formatDateTimeForPostgres = (dateTime: Date) => {
     const year = dateTime.getFullYear();
     const month = String(dateTime.getMonth() + 1).padStart(2, '0');
@@ -160,4 +160,4 @@ function App() {
   );
 }
 
-export default App;
+export default MyTripsHistory;

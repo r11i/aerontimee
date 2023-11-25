@@ -22,7 +22,7 @@ interface FlightInfo {
 }
 
 
-const MyTripDetail: React.FC = () => {
+const MyTripsDetail: React.FC = () => {
   const formatDateTimeForPostgres = (dateTime: Date) => {
     const year = dateTime.getFullYear();
     const month = String(dateTime.getMonth() + 1).padStart(2, '0');
@@ -256,4 +256,4 @@ const MyTripDetail: React.FC = () => {
   );
 };
 
-export default MyTripDetail;
+export default MyTripsDetail;

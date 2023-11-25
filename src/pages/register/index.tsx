@@ -1,47 +1,43 @@
-'use client'
-
 import React from 'react';
 import Image from 'next/image';
-import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
 import { useState } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
 
-function App() {
+function Register() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const router = useRouter()
   const supabase = createClientComponentClient()
-  // const handleRegister = async () => {
-  //   await supabase.auth.signUp({
-  //     email,
-  //     password,
-  //     options: {
-  //       emailRedirectTo: `/api/auth/`,
-  //     },
-  //   })
-  //   router.refresh()
-  // }
-
   const handleRegister = async () => {
-    // Check if email already exists using Supabase authentication API
-
-    // If email doesn't exist, proceed with registration
-    const { error: registrationError } = await supabase.auth.signUp({
+    await supabase
+    .from('profiles')
+    .select('*')
+    .eq('email', email)
+    .then(({ data, error }) => {
+      if (error) {
+        alert(error.message)
+        return
+      }
+      if (data.length !== 0) {
+        alert('User already exist!')
+        return
+      }
+    })
+    const {data, error: registrationError} = await supabase.auth.signUp({
       email,
       password,
       options: {
-        // Use your desired options
+        emailRedirectTo: `/api/auth/`,
       },
-    });
+    })
 
     if (registrationError) {
       console.error("Error during registration:", registrationError.message);
       alert(registrationError.message);
       return;
     }
-
-    router.refresh();
+    router.refresh()
   }
 
   return (
@@ -61,7 +57,7 @@ function App() {
               <input style={{color: 'black', width: '100%',marginBottom: '60px',padding: '9px 19px 9px 19px', borderRadius: '10px', display: 'block'}} type="text" id="password" name="password" placeholder="Input your password.." onChange={(e) => setPassword(e.target.value)} value={password} required></input>
               {/* <label htmlFor="name">Confirm password</label>
               <input style={{marginBottom: '60px', color: 'black', width: '100%',padding: '9px 19px 9px 19px', borderRadius: '10px', display: 'block'}} type="text" id="confirm-password" name="confirm-password" placeholder="Confirm your password.." required></input> */}
-              <button onClick={handleRegister} style={{fontWeight: 'bold', borderRadius: '15px', width: '100%', padding: '11px 25px 11px 25px', backgroundColor: '#76B3DD', cursor:'pointer'}}>Register</button>
+              <button onClick={handleRegister} style={{fontWeight: 'bold', borderRadius: '15px', width: '100%', padding: '11px 25px 11px 25px', backgroundColor: '#76B3DD', cursor:'pointer', marginTop: '20px'}}>Register</button>
             {/* </form> */}
             <p style={{textAlign: 'center', marginTop: '10px'}}>Already have an account? <a href='/login' style={{color: '#76B3DD'}}>Login</a></p>
             
@@ -81,4 +77,4 @@ function App() {
   );
 }
 
-export default App;
+export default Register;

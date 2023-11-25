@@ -21,12 +21,12 @@ const Navbar: React.FC<NavbarProps> = ({image, navbarStyles, linkStyles, user, l
   return (
     <nav className={`p-4 ${navbarStyles || ''}`}>
       <ul className="flex justify-between">
-        <li className={`${linkStyles || ''} relative`} onClick={toggleMyTripsDropdown}>
+        <li className={`${linkStyles || ''} relative`} onClick={toggleMyTripsDropdown} >
           <p className='cursor-pointer'>
             MyTrips
           </p>
           {showMyTripsDropdown && (
-            <ul className="absolute bg-[#C2C3CB] text-black p-5 rounded-[20px] rounded-tl-[0px]" style={{ top: '100%', left: '0', width: '300%' }}>
+            <ul data-testid="my-trips-dropdown" className="absolute bg-[#C2C3CB] text-black p-5 rounded-[20px] rounded-tl-[0px]" style={{ top: '100%', left: '0', width: '300%' }}>
               <li>
                 <a href={'/mytrips'}>My Trips</a>
               </li>
@@ -39,22 +39,22 @@ const Navbar: React.FC<NavbarProps> = ({image, navbarStyles, linkStyles, user, l
             </ul>
           )}
         </li>
-          <li className={`${linkStyles || ''}`}>
-            <a href={'/'} className="flex items-center">
-              {image && <Image src={image} alt="logo" width={212} height={69} />}
+        <li className={`${linkStyles || ''}`}>
+          <a href={'/'} className="flex items-center">
+            {image && <Image src={image} alt="logo" width={212} height={69} />}
+          </a>
+        </li>
+        <li className={`${linkStyles || ''}`}>
+          {user ? (
+            <a className="flex items-center cursor-pointer" onClick={logOut}>
+              Logout
             </a>
-          </li>
-          <li className={`${linkStyles || ''}`}>
-            {user ? (
-              <a className="flex items-center cursor-pointer" onClick={logOut}>
-                Logout
-              </a>
-            ) : (
-              <a href={'/login'} className="flex items-center">
-                Login
-              </a>
-            )}
-          </li>
+          ) : (
+            <a href={'/login'} className="flex items-center">
+              Login
+            </a>
+          )}
+        </li>
       </ul>
     </nav>
   );

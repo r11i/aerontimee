@@ -11,6 +11,9 @@ import { User } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Link as ScrollLink } from 'react-scroll';
+import InputField from '@/components/InputField';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -40,8 +43,11 @@ export default function Home() {
   const nextDay = formatInitialDateTimeForPostgres(date);
   const [user, setUser] = useState<User | null>(null);
   const [flightsData, setFlightsData] = useState<any[]>([]);
+  const [selectedAirline, setSelectedAirline] = useState<string>('');
+  const [selectedOrigin, setSelectedOrigin] = useState<string>('');
+  const [selectedDestination, setSelectedDestination] = useState<string>('');
   const supabase = createClientComponentClient();
-  const router = useRouter()
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   function updateStatus(flight: any, currentTime: any) {
     const currTime = new Date(currentTime);
@@ -58,12 +64,23 @@ export default function Home() {
       }
     }
   }
+
+  const handleAirlineInputChange = (newValue: string) => {
+    setSelectedAirline(newValue);
+  };
+
+  const handleOriginInputChange = (newValue: string) => {
+    setSelectedOrigin(newValue);
+  };
+
+  const handleDestinationInputChange = (newValue: string) => {
+    setSelectedDestination(newValue);
+  };
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const { data: { user } } = await supabase.auth.getUser();
         setUser(user);
-        console.log(user?.id);
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -71,7 +88,6 @@ export default function Home() {
     const fetchFlightsData = async () => {
       try {
         // const currentTime = '';
-        console.log(currentTime)
         // Use 'from' method to select data from the 'flight' table
         const { data, error } = await supabase.from('Flight').
                                                select('flightNumber,originAirport,destAirport,depTime,arrTime,airline,status').
@@ -80,12 +96,10 @@ export default function Home() {
         if (error) {
           throw error;
         }
-        console.log('before update',data)
 
         for (const flight of data) {
           updateStatus(flight, currentTime);
         }
-        console.log('after update',data)
         data.sort((a, b) => new Date(a.depTime).getTime() - new Date(b.depTime).getTime());
         setFlightsData(data || []);
         setIsLoading(false);
@@ -95,7 +109,7 @@ export default function Home() {
       }
     };
     fetchUserData();
-    fetchFlightsData();   
+    fetchFlightsData(); 
   }, []);
 
   const logOut = async () => {
@@ -106,14 +120,47 @@ export default function Home() {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     alert('Button clicked!');
   };
+
+  const [startDepTime, setStartDepTime] = useState<Date>();
+  const [endDepTime, setEndDepTime] = useState<Date>();
+  const [startArrTime, setStartArrTime] = useState<Date>();
+  const [endArrTime, setEndArrTime] = useState<Date>();
+
+
+  const handleStartDepTimeChange = (date: Date) => {
+    setStartDepTime(date)
+  }
+
+  const handleEndDepTimeChange = (date: Date) => {
+    setEndDepTime(date)
+  }
+
+  const handleStartArrTimeChange = (date: Date) => {
+    setStartArrTime(date)
+  }
+
+  const handleEndArrTimeChange = (date: Date) => {
+    setEndArrTime(date)
+  }
+
+
+  const filterByAirline = (flight: any) => !selectedAirline || flight.airline === selectedAirline;
+  const filterByOrigin = (flight: any) => !selectedOrigin || flight.originAirport === selectedOrigin;
+  const filterByDestination = (flight: any) => !selectedDestination || flight.destAirport === selectedDestination;
+  const filterByStartDepTime = (flight: any) => !startDepTime || new Date(flight.depTime) >= new Date(formatDateTimeForPostgres(startDepTime));
+  const filterByEndDepTime = (flight: any) => !endDepTime || new Date(flight.depTime) <= new Date(formatDateTimeForPostgres(endDepTime));
+  const filterByStartArrTime = (flight: any) => !startArrTime || new Date(flight.arrTime) >= new Date(formatDateTimeForPostgres(startArrTime));
+  const filterByEndArrTime = (flight: any) => !endArrTime || new Date(flight.arrTime) <= new Date(formatDateTimeForPostgres(endArrTime));
+
   
   if(isLoading) 
     return (
-    <p className='flex justify-center items-center w-screen h-screen'>
+    <p role='loading' className='flex justify-center items-center w-screen h-screen'>
       <svg aria-hidden="true" className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
         <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
       </svg>
+      loading
     </p>
     )
   
@@ -124,7 +171,7 @@ export default function Home() {
         <div style={{ width: '65%', height: '100vh', right: '0', position: 'absolute' }}>
           <div style={{ position: 'relative', height: '100vh' }}>
             <Image
-              alt='gambar'
+              alt='homepagebanner'
               style={{ position: 'absolute', width: '100%', height: '100%' }}
               src="/Vector7.png"
               height={862}
@@ -170,9 +217,87 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div id='flightData'>
-        <ScrollBarContainer content={<FlightList flights={flightsData} isClickable={false}/>} className='mx-auto' />
+      <div className='flex'>
+        <div className='w-[30%]'>
+          <p className='text-[32px] font-[600] pl-[35px] pb-[20px]'>Filter</p>
+          <div className='bg-[#2D2F3D] rounded-tl-[0px] rounded-tr-[20px] rounded-bl-[0px] rounded-br-[20px] px-[35px] py-[20px]'>
+            <InputField labelStyle='text-[#9ACAE7] font-[600]' className="mb-[27px]" placeholder="Airline" label="Airline" value={selectedAirline} onChange={handleAirlineInputChange}/>
+            <InputField labelStyle='text-[#9ACAE7] font-[600]' className="mb-[27px]" placeholder="Origin" label="Origin" value={selectedOrigin} onChange={handleOriginInputChange}/>
+            <InputField labelStyle='text-[#9ACAE7] font-[600]' className="mb-[27px]" placeholder="Destination" label="Destination" value={selectedDestination} onChange={handleDestinationInputChange}/>   
+            <div className='text-[#9ACAE7] font-bold'>Start Departure Time</div>
+            <div className="bg-white px-[19px] py-[9px] mb-[27px] flex border-solid border-[#e5e7eb] border-[2px] rounded-[10px] w-[100%]">
+              <DatePicker
+                className="mr-[35px] w-[100%] "
+                selected={startDepTime}
+                onChange={handleStartDepTimeChange}
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={1}
+                timeCaption="Time"
+                dateFormat="dd/MM/yyyy h:mm aa"
+                placeholderText="Select date and time"
+              />                 
+            </div>
+            <div className='text-[#9ACAE7] font-bold'>End Departure Time</div>
+            <div className="bg-white px-[19px] py-[9px] mb-[27px] flex border-solid border-[#e5e7eb] border-[2px] rounded-[10px] w-[100%]">
+              <DatePicker
+                className="mr-[35px] w-[100%] "
+                selected={endDepTime}
+                onChange={handleEndDepTimeChange}
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={1}
+                timeCaption="Time"
+                dateFormat="dd/MM/yyyy h:mm aa"
+                placeholderText="Select date and time"
+              />                 
+            </div> 
+            <div className='text-[#9ACAE7] font-bold'>Start Arrival Time</div>
+            <div className="bg-white px-[19px] py-[9px] mb-[27px] flex border-solid border-[#e5e7eb] border-[2px] rounded-[10px] w-[100%]">
+              <DatePicker
+                className="mr-[35px] w-[100%] "
+                selected={startArrTime}
+                onChange={handleStartArrTimeChange}
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={1}
+                timeCaption="Time"
+                dateFormat="dd/MM/yyyy h:mm aa"
+                placeholderText="Select date and time"
+              />                 
+            </div>
+            <div className='text-[#9ACAE7] font-bold'>End Arrival Time</div>
+            <div className="bg-white px-[19px] py-[9px] mb-[27px] flex border-solid border-[#e5e7eb] border-[2px] rounded-[10px] w-[100%]">
+              <DatePicker
+                className="mr-[35px] w-[100%] "
+                selected={endArrTime}
+                onChange={handleEndArrTimeChange}
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={1}
+                timeCaption="Time"
+                dateFormat="dd/MM/yyyy h:mm aa"
+                placeholderText="Select date and time"
+              />                 
+            </div> 
+          </div>
+                
+        </div>
+        <div data-testid="flightData" id='flightData' className='w-[70%] pl-[20px]'>
+          <ScrollBarContainer
+            content={
+              <FlightList
+                flights={flightsData.filter(
+                  (flight) => filterByAirline(flight) && filterByOrigin(flight) && filterByDestination(flight) && filterByStartDepTime(flight) && filterByEndDepTime(flight) && filterByStartArrTime(flight) && filterByEndArrTime(flight)
+                )}
+                isClickable={false}
+              />
+            }
+            className='w-full mx-auto'
+          />
+        </div>
       </div>
+      
       
       <Footer></Footer>
     </div>

@@ -27,7 +27,7 @@ const airlineImageMap: Record<string, string> = {
 const FlightListItem: React.FC<FlightListItemProps> = ({ flight, isClickable }) => {
     // const airlineImage = airlineImageMap[flight.airline];
     const airlineImage = '/garudaindonesia.png';
-    const isDeparture = flight.originAirport === 'Jakarta';
+    const isDeparture = flight.originAirport === 'CGK';
     const status = isDeparture ? 'Departure' : 'Arrival';
     const logo = isDeparture ? departureLogo : arrivalLogo;
     const getStatusColorClass = (status: string): string => {
@@ -47,7 +47,7 @@ const FlightListItem: React.FC<FlightListItemProps> = ({ flight, isClickable }) 
     
     if (isClickable){
       return (
-        <Link href={{ pathname: '/mytrips/detail', query: { flightNumber: flight.flightNumber, depTime: flight.depTime } }}>
+        <Link className='flight-list-item' href={{ pathname: '/mytrips/detail', query: { flightNumber: flight.flightNumber, depTime: flight.depTime } }}>
           <li className='mx-[0px] bg-[#C2C3CB] rounded-[20px] mb-[20px] px-[39px] py-[35px] '>
             <div className='flex justify-between'> 
               <div>
@@ -56,7 +56,7 @@ const FlightListItem: React.FC<FlightListItemProps> = ({ flight, isClickable }) 
                   <div className='ml-[33px]'>
                     {/* <strong className='text-[32px] text[#2D2F3D]'>{flight.origin} - {flight.destination}</strong> <br /> */}
                     <strong className='text-[32px] text[#2D2F3D]'>
-                      {flight.originAirport !== 'Jakarta' ? `${flight.originAirport} - ${flight.flightNumber}` : `${flight.destAirport} - ${flight.flightNumber}`}
+                      {flight.originAirport !== 'CGK' ? `${flight.originAirport} - ${flight.flightNumber}` : `${flight.destAirport} - ${flight.flightNumber}`}
                     </strong>
                     <br />
                     <strong className='text-[24px] text-[#114A70] font-[400]'>{flight.airline}</strong>
@@ -84,7 +84,7 @@ const FlightListItem: React.FC<FlightListItemProps> = ({ flight, isClickable }) 
     }
     else{
       return (    
-        <li className='mx-[0px] bg-[#C2C3CB] rounded-[20px] mb-[20px] px-[39px] py-[35px] '>
+        <li className='flight-list-item mx-[0px] bg-[#C2C3CB] rounded-[20px] mb-[20px] px-[39px] py-[35px] '>
           <div className='flex justify-between'> 
             <div>
               <div  className='flex'>
@@ -92,7 +92,7 @@ const FlightListItem: React.FC<FlightListItemProps> = ({ flight, isClickable }) 
                 <div className='ml-[33px]'>
                   {/* <strong className='text-[32px] text[#2D2F3D]'>{flight.origin} - {flight.destination}</strong> <br /> */}
                   <strong className='text-[32px] text[#2D2F3D]'>
-                    {flight.originAirport !== 'Jakarta' ? `${flight.originAirport} - ${flight.flightNumber}` : `${flight.destAirport} - ${flight.flightNumber}`}
+                    {flight.originAirport !== 'CGK' ? `${flight.originAirport} - ${flight.flightNumber}` : `${flight.destAirport} - ${flight.flightNumber}`}
                   </strong>
                   <br />
                   <strong className='text-[24px] text-[#114A70] font-[400]'>{flight.airline}</strong>

@@ -1,5 +1,5 @@
 // InputField.tsx
-import React, { ChangeEvent, HTMLProps } from 'react';
+import React, { ChangeEvent } from 'react';
 
 interface InputFieldProps {
   label: string;
@@ -7,19 +7,20 @@ interface InputFieldProps {
   placeholder: string;
   onChange: (newValue: string) => void;
   className: string;
-  required?: boolean;
+  labelStyle?: string;
 }
 
-const InputField: React.FC<InputFieldProps> = ({ label, value, onChange, placeholder, className, required }) => {
+const InputField: React.FC<InputFieldProps> = ({ label, value, onChange, placeholder, className, labelStyle }) => {
   const defaultClasses = "block border-solid rounded-[10px] border-[2px] px-[19px] py-[9px] w-[100%]";
   const combinedClasses = className ? `${defaultClasses} ${className}` : defaultClasses;
+  const labelClasses = `font-bold ${labelStyle || ''}`;
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
   };
 
   return (
-    <div className={className}>
-      <label htmlFor="inputField" className='font-bold'>{label}</label>
+    <div data-testid="input-container" className={className}>
+      <label htmlFor="inputField" className={labelClasses}>{label}</label>
       <input
         className={defaultClasses}
         type="text"
@@ -27,7 +28,6 @@ const InputField: React.FC<InputFieldProps> = ({ label, value, onChange, placeho
         value={value}
         onChange={handleInputChange}
         placeholder={placeholder}
-        required={required}
       />
     </div>
   );

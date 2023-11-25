@@ -52,7 +52,7 @@ const TripInfo: React.FC<TripInfoProps> = ({ tripInfo }) => {
                         <div>
                             <p>{tripInfo?.airline}</p>
                             <p>{tripInfo?.originAirport === 'CGK'
-                                ? `${tripInfo?.destAirport} - ${tripInfo.flightNumber}`
+                                ? `${tripInfo?.destAirport} - ${tripInfo?.flightNumber}`
                                 : `${tripInfo?.originAirport} - ${tripInfo?.flightNumber}`}
                             </p>
                         </div>

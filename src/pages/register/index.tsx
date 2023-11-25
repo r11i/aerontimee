@@ -58,7 +58,7 @@ function App() {
               <label htmlFor="email">Email</label>
               <input style={{color: 'black', width: '100%', padding: '9px 19px 9px 19px', borderRadius: '10px', display: 'block'}} type="text" id="email" name="email" placeholder="Input your email.." onChange={(e) => setEmail(e.target.value)} value={email} required></input>
               <label htmlFor="password">Password</label>
-              <input style={{color: 'black', width: '100%',padding: '9px 19px 9px 19px', borderRadius: '10px', display: 'block'}} type="text" id="password" name="password" placeholder="Input your password.." onChange={(e) => setPassword(e.target.value)} value={password} required></input>
+              <input style={{color: 'black', width: '100%',marginBottom: '60px',padding: '9px 19px 9px 19px', borderRadius: '10px', display: 'block'}} type="text" id="password" name="password" placeholder="Input your password.." onChange={(e) => setPassword(e.target.value)} value={password} required></input>
               {/* <label htmlFor="name">Confirm password</label>
               <input style={{marginBottom: '60px', color: 'black', width: '100%',padding: '9px 19px 9px 19px', borderRadius: '10px', display: 'block'}} type="text" id="confirm-password" name="confirm-password" placeholder="Confirm your password.." required></input> */}
               <button onClick={handleRegister} style={{fontWeight: 'bold', borderRadius: '15px', width: '100%', padding: '11px 25px 11px 25px', backgroundColor: '#76B3DD', cursor:'pointer'}}>Register</button>

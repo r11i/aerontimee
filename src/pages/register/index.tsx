@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
 
-function App() {
+function Register() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const router = useRouter()
@@ -77,4 +77,4 @@ function App() {
   );
 }
 
-export default App;
+export default Register;

@@ -11,7 +11,7 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-function App() {
+function MyTripsRegister() {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       alert('Button clicked!');
   };
@@ -262,4 +262,4 @@ function App() {
   );
 }
 
-export default App;
+export default MyTripsRegister;

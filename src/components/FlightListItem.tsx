@@ -47,7 +47,7 @@ const FlightListItem: React.FC<FlightListItemProps> = ({ flight, isClickable }) 
     
     if (isClickable){
       return (
-        <Link href={{ pathname: '/mytrips/detail', query: { flightNumber: flight.flightNumber, depTime: flight.depTime } }}>
+        <Link className='flight-list-item' href={{ pathname: '/mytrips/detail', query: { flightNumber: flight.flightNumber, depTime: flight.depTime } }}>
           <li className='mx-[0px] bg-[#C2C3CB] rounded-[20px] mb-[20px] px-[39px] py-[35px] '>
             <div className='flex justify-between'> 
               <div>
@@ -84,7 +84,7 @@ const FlightListItem: React.FC<FlightListItemProps> = ({ flight, isClickable }) 
     }
     else{
       return (    
-        <li className='mx-[0px] bg-[#C2C3CB] rounded-[20px] mb-[20px] px-[39px] py-[35px] '>
+        <li className='flight-list-item mx-[0px] bg-[#C2C3CB] rounded-[20px] mb-[20px] px-[39px] py-[35px] '>
           <div className='flex justify-between'> 
             <div>
               <div  className='flex'>

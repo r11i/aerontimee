@@ -1,5 +1,5 @@
 // InputField.tsx
-import React, { ChangeEvent, HTMLProps } from 'react';
+import React, { ChangeEvent } from 'react';
 
 interface InputFieldProps {
   label: string;
@@ -19,7 +19,7 @@ const InputField: React.FC<InputFieldProps> = ({ label, value, onChange, placeho
   };
 
   return (
-    <div className={className}>
+    <div data-testid="input-container" className={className}>
       <label htmlFor="inputField" className={labelClasses}>{label}</label>
       <input
         className={defaultClasses}

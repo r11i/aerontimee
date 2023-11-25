@@ -144,6 +144,19 @@ export default function Home() {
   }
 
 
+  const [arrival, setArrival] = useState<boolean>(false);
+  const [departure, setDeparture] = useState<boolean>(false);
+
+  const handleArrivalButtonClick = () => {
+    setArrival(!arrival);
+    setDeparture(false);
+  };
+
+  const handleDepartureButtonClick = () => {
+    setDeparture(!departure);
+    setArrival(false);
+  };
+
   const filterByAirline = (flight: any) => !selectedAirline || flight.airline === selectedAirline;
   const filterByOrigin = (flight: any) => !selectedOrigin || flight.originAirport === selectedOrigin;
   const filterByDestination = (flight: any) => !selectedDestination || flight.destAirport === selectedDestination;
@@ -151,7 +164,8 @@ export default function Home() {
   const filterByEndDepTime = (flight: any) => !endDepTime || new Date(flight.depTime) <= new Date(formatDateTimeForPostgres(endDepTime));
   const filterByStartArrTime = (flight: any) => !startArrTime || new Date(flight.arrTime) >= new Date(formatDateTimeForPostgres(startArrTime));
   const filterByEndArrTime = (flight: any) => !endArrTime || new Date(flight.arrTime) <= new Date(formatDateTimeForPostgres(endArrTime));
-
+  const filterByArrival = (flight: any) => !arrival || flight.destAirport === 'CGK'
+  const filterByDeparture = (flight: any) => !departure || flight.originAirport === 'CGK'
   
   if(isLoading) 
     return (
@@ -221,6 +235,19 @@ export default function Home() {
         <div className='w-[30%]'>
           <p className='text-[32px] font-[600] pl-[35px] pb-[20px]'>Filter</p>
           <div className='bg-[#2D2F3D] rounded-tl-[0px] rounded-tr-[20px] rounded-bl-[0px] rounded-br-[20px] px-[35px] py-[20px]'>
+            <div className='flex justify-between'>
+              <Button
+                className={`bg-transparent border-solid border-[#76B3DD] border-[2px] text-[#76B3DD] font-[700] mb-[27px] ${arrival ? 'bg-[#76B3DD] text-white' : ''}`}
+                label='Arrival'
+                onClick={handleArrivalButtonClick}
+              />
+              <Button
+                className={`bg-transparent border-solid border-[#76B3DD] border-[2px] text-[#76B3DD] font-[700] mb-[27px] ${departure ? 'bg-[#76B3DD] text-white' : ''}`}
+                label='Departure'
+                onClick={handleDepartureButtonClick}
+              />
+            </div>
+            
             <InputField labelStyle='text-[#9ACAE7] font-[600]' className="mb-[27px]" placeholder="Airline" label="Airline" value={selectedAirline} onChange={handleAirlineInputChange}/>
             <InputField labelStyle='text-[#9ACAE7] font-[600]' className="mb-[27px]" placeholder="Origin" label="Origin" value={selectedOrigin} onChange={handleOriginInputChange}/>
             <InputField labelStyle='text-[#9ACAE7] font-[600]' className="mb-[27px]" placeholder="Destination" label="Destination" value={selectedDestination} onChange={handleDestinationInputChange}/>   
@@ -288,7 +315,7 @@ export default function Home() {
             content={
               <FlightList
                 flights={flightsData.filter(
-                  (flight) => filterByAirline(flight) && filterByOrigin(flight) && filterByDestination(flight) && filterByStartDepTime(flight) && filterByEndDepTime(flight) && filterByStartArrTime(flight) && filterByEndArrTime(flight)
+                  (flight) => filterByAirline(flight) && filterByOrigin(flight) && filterByDestination(flight) && filterByStartDepTime(flight) && filterByEndDepTime(flight) && filterByStartArrTime(flight) && filterByEndArrTime(flight) && filterByArrival(flight) && filterByDeparture(flight)
                 )}
                 isClickable={false}
               />

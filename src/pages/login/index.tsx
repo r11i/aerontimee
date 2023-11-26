@@ -64,7 +64,7 @@ function Login() {
   
   return (
     <div style={{ color: 'white', position: 'relative', height: '100vh', width: '100vw' }}>
-      <div style={{ width: '65%', height: '100vh', right: '0', position: 'absolute' }}>
+      <div className='w-[65%] h-[100vh] right-0 absolute max-[372px]:w-[80%]'>
         <div style={{ position: 'relative', height: '100vh' }}>
           <Image
             alt='gambar'
@@ -85,8 +85,8 @@ function Login() {
             }}
           >
             <div style={{ marginBottom: '50px' }}>
-              <p style={{ fontSize: '48px', color: '#E0F7FC', fontWeight: 'bold', textAlign: 'center' }}>LOGIN</p>
-              <p style={{ fontSize: '18px', textAlign: 'center' }}>Sign in to continue</p>
+              <p className='text-[48px] text-[#E0F7FC] font-bold text-center max-[586px]:text-[32px]'>LOGIN</p>
+              <p className='text-[18px] text-center max-[586px]:text-[12px]'>Sign in to continue</p>
             </div>
             {/* <form action="process_registration.php" method="post"> */}
               <label htmlFor="email">Email</label>
@@ -144,11 +144,11 @@ function Login() {
           </div>
         </div>
       </div>
-      <Image alt="gambar" style={{ height: '100vh', position: 'absolute', zIndex: -1 }} src="/homepagebanner.png" width={900} height={862} />
+      <Image alt="gambar" style={{ height: '100vh', position: 'absolute', zIndex: -1, width: '66%' }} src="/homepagebanner.png" width={900} height={862} />
       <div style={{ position: 'relative', height: '100vh' }}>
-        <div style={{ position: 'absolute', left: '51px', top: '100px' }}>
-          <p style={{ fontWeight: 'bold', fontSize: '36px' }}>WELCOME</p>
-          <p style={{ fontSize: '48px', fontWeight: 'bold' }}>BACK.</p>
+        <div className='absolute left-[51px] top-[100px] max-[372px]:left-[25px]'>
+          <p className='font-bold text-[36px] max-[586px]:text-[24px] max-[372px]:text-[22px]'>WELCOME</p>
+          <p className='font-bold text-[48px] max-[586px]:text-[32px] max-[372px]:text-[26px]'>BACK.</p>
         </div>
       </div>
     </div>

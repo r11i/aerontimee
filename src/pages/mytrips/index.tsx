@@ -146,17 +146,17 @@ function MyTrips() {
     <>
       <Navbar user={user} logOut={logOut} image='/aerontimelogo-black.png' navbarStyles="z-[100] box-border relative top-0 w-full px-[82px]" linkStyles="text-black flex items-center text-[24px]" />
       <div className='flex items-center'>
-        <div className='flex-1'>
-          <Image className="pl-[24px]" src="/mytrips-1.png" alt='gambar' width={714} height={902}></Image>
+        <div className='flex-1 border-solid border-black border-[1px]'>
+          <Image className="pl-[24px] w-[100%]" src="/mytrips-1.png" alt='gambar' width={714} height={902}></Image>
         </div>
         <div className="flex-1 relative">
-          <p className='text-[44px] mr-[54px] ml-[61px] font-[700] text-center mb-[56px]'>Currently, You Do Not Have Any Trip Going On</p>
-          <div className='absolute px-auto flex w-[100%] justify-center'>
-            <Link href={'/mytrips/register'}>
-              <Button label='Register A Flight' className='bg-[#2D2F3D] text-white font-[700] mr-[33px]'></Button>
+          <p className='text-[44px] mr-[54px] ml-[61px] font-[700] text-center mb-[56px] max-[951px]:text-[30px]'>Currently, You Do Not Have Any Trip Going On</p>
+          <div className='absolute px-auto flex w-[100%] justify-center border-solid border-black border-[1px] max-[830px]:block'>
+            <Link href={'/mytrips/register'} className='border-solid border-black border-[1px]  relative'>
+              <Button label='Register A Flight' className='bg-[#2D2F3D] text-white font-[700] mr-[33px] max-[830px]:px-[16px] max-[830px]:py-[7px] max-[830px]:mr-[20px] max-[830px]:block max-[830px]:w-[100%] max-[830px]:left-[50%]'></Button>
             </Link>
-            <Link href={'/mytrips/history'}>
-              <Button label='View My Flight History' className='border-[#2D2F3D] border-[3px] border-solid'></Button>
+            <Link href={'/mytrips/history'} className='border-solid border-black border-[1px] max-[830px]:block  relative'>
+              <Button label='View My Flight History' className='border-[#2D2F3D] border-[3px] border-solid max-[830px]:px-[16px]  max-[830px]:py-[7px] max-[830px]:w-[100%] max-[830px]:left-[50%]'></Button>
             </Link>          
           </div>
         </div>

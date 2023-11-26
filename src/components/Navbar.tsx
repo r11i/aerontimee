@@ -22,7 +22,7 @@ const Navbar: React.FC<NavbarProps> = ({image, navbarStyles, linkStyles, user, l
     <nav className={`p-4 ${navbarStyles || ''}`}>
       <ul className="flex justify-between">
         <li className={`${linkStyles || ''} relative`} onClick={toggleMyTripsDropdown} >
-          <p className='cursor-pointer'>
+          <p className='cursor-pointer max-[587px]:text-[15px]'>
             MyTrips
           </p>
           {showMyTripsDropdown && (
@@ -41,16 +41,16 @@ const Navbar: React.FC<NavbarProps> = ({image, navbarStyles, linkStyles, user, l
         </li>
         <li className={`${linkStyles || ''}`}>
           <a href={'/'} className="flex items-center">
-            {image && <Image src={image} alt="logo" width={212} height={69} />}
+            {image && <Image src={image} alt="logo" width={212} height={69} className='max-[587px]:w-[120px]' />}
           </a>
         </li>
         <li className={`${linkStyles || ''}`}>
           {user ? (
-            <a className="flex items-center cursor-pointer" onClick={logOut}>
+            <a className="flex items-center cursor-pointer max-[587px]:text-[15px]" onClick={logOut}>
               Logout
             </a>
           ) : (
-            <a href={'/login'} className="flex items-center">
+            <a href={'/login'} className="flex items-center max-[587px]:text-[15px]">
               Login
             </a>
           )}

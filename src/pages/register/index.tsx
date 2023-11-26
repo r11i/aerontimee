@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useState } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link';
 
 function Register() {
   const [email, setEmail] = useState('')
@@ -47,7 +48,7 @@ function Register() {
           <Image alt="gambar" style={{position: 'absolute', width: '100%', height: '100%'}} src="/Vector7.png" height={862} width={1002}/>
           <div style={{top: '50%', translate: '0% -50%', left: '40%', zIndex: '1', position: 'absolute', width: '50%', height: 'fit-content'}}>
             <div style={{marginBottom: '50px'}}>
-              <p style={{fontSize: '48px', color: '#E0F7FC', fontWeight: 'bold', textAlign: 'center'}}>SIGN UP</p>
+              <p className='text-[48px] text-[#E0F7FC] font-bold text-center max-[532px]:text-[32px]'>SIGN UP</p>
               <p style={{fontSize: '18px', textAlign: 'center'}}>Create a new account</p>
             </div>
             {/* <form action="process_registration.php" method="post"> */}
@@ -64,11 +65,11 @@ function Register() {
           </div>
         </div>
       </div>
-      <Image alt="gambar" style={{height: '100vh', position: 'absolute', zIndex: '-1'}} src="/homepagebanner.png" width={900} height={862} />
+      <Image alt="gambar" style={{height: '100vh', position: 'absolute', zIndex: '-1', width: '66%'}} src="/homepagebanner.png" width={900} height={862} />
       <div style={{position: 'relative', height: '100vh'}}>
         <div style={{position: 'absolute', left: '51px', top: '100px'}}>
-          <p style={{fontWeight: 'bold', fontSize: '36px'}}>REGISTER TO</p>
-          <p style={{fontSize: '48px', fontWeight: 'bold'}}>TRACK YOUR<br></br>FLIGHT.</p>
+          <p className='text-[36px] font-bold max-[735px]:text-[24px] max-[532px]:text-[16px]'>REGISTER TO</p>
+          <p className='text-[48px] font-bold max-[735px]:text-[32px] max-[532px]:text-[22px]'>TRACK YOUR<br></br>FLIGHT.</p>
         </div>
       </div>
 

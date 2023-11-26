@@ -203,11 +203,11 @@ export default function Home() {
               }}
             >
               <div style={{ marginBottom: '50px' }}>
-                <p style={{ fontSize: '48px', color: '#FFFFFF', fontWeight: 'bold', textAlign: 'right' }}>TRACK YOUR FLIGHT</p>
-                <p style={{ fontSize: '18px', textAlign: 'right' }}>Experience the ultimate convenience of real-time flight tracking with our user-friendly website, ensuring you stay informed about your flight's status every step of the way.</p>
-                <div className='flex justify-end mt-[38px]'>
+                <p className='text-[48px] text-[#FFFFFF] font-bold text-right max-[750px]:text-[24px]'>TRACK YOUR FLIGHT</p>
+                <p className='text-[18px] text-right max-[587px]:text-[10px]'>Experience the ultimate convenience of real-time flight tracking with our user-friendly website, ensuring you stay informed about your flight's status every step of the way.</p>
+                <div className='flex justify-end mt-[38px] max-[587px]:justify-between'>
                   <Link href={'/register'}>
-                    <Button className="bg-[#76B3DD] mr-[32px] font-[700]" label='Get Started'></Button>
+                    <Button className="bg-[#76B3DD] mr-[32px] font-[700] max-[587px]:text-[8px] max-[587px]:px-[10px] max-[587px]:py-[5px]" label='Get Started'></Button>
                   </Link>
                   <ScrollLink
                     to="flightData"
@@ -216,7 +216,7 @@ export default function Home() {
                     offset={-70} // adjust the offset as needed
                     duration={500}
                   >
-                    <Button className='bg-transparent border-solid border-[#76B3DD] border-[3px] text-[#76B3DD] font-[700]' label='See More'></Button>
+                    <Button className='bg-transparent border-solid border-[#76B3DD] border-[3px] text-[#76B3DD] font-[700] max-[587px]:text-[8px] max-[587px]:px-[10px] max-[587px]:py-[5px]' label='See More'></Button>
                   </ScrollLink>
                 </div>
               </div>
@@ -226,13 +226,13 @@ export default function Home() {
         <Image alt="gambar" style={{ height: '100vh', position: 'absolute', zIndex: -1 }} src="/homepage.png" width={1075} height={1024} />
         <div style={{ position: 'relative', height: '100vh' }}>
           <div style={{ position: 'absolute', left: '51px', top: '100px' }}>
-            <p style={{ fontWeight: 'bold', fontSize: '36px' }}>WELCOME</p>
-            <p style={{ fontSize: '48px', fontWeight: 'bold' }}>BACK.</p>
+            <p className='text-[36px] font-bold max-[750px]:text-[20px]'>WELCOME</p>
+            <p className='text-[48px] font-bold max-[750px]:text-[20px]'>BACK.</p>
           </div>
         </div>
       </div>
-      <div className='flex'>
-        <div className='w-[30%]'>
+      <div className='flex max-[900px]:block'>
+        <div className='w-[30%] max-[900px]:w-[100%]'>
           <p className='text-[32px] font-[600] pl-[35px] pb-[20px]'>Filter</p>
           <div className='bg-[#2D2F3D] rounded-tl-[0px] rounded-tr-[20px] rounded-bl-[0px] rounded-br-[20px] px-[35px] py-[20px]'>
             <div className='flex justify-between'>
@@ -310,7 +310,7 @@ export default function Home() {
           </div>
                 
         </div>
-        <div data-testid="flightData" id='flightData' className='w-[70%] pl-[20px]'>
+        <div data-testid="flightData" id='flightData' className='w-[70%] pl-[20px] max-[900px]:w-[100%]'>
           <ScrollBarContainer
             content={
               <FlightList
